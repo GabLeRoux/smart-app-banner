@@ -53,7 +53,8 @@ var SmartBanner = function(options) {
 		},
 		theme: '', // put platform type ('ios', 'android', etc.) here to force single theme on all device
 		icon: '', // full path to icon image if not using website icon image
-		force: '' // put platform type ('ios', 'android', etc.) here for emulation
+		force: '', // put platform type ('ios', 'android', etc.) here for emulation
+    ios_app_id: null // set this and it will only display the js banner (also you must remove the ios meta in your header)
 	}, options || {});
 
 	if (this.options.force) {
@@ -68,11 +69,11 @@ var SmartBanner = function(options) {
 
 	// Don't show banner on ANY of the following conditions:
 	// - device os is not supported,
-	// - user is on mobile safari for ios 6 or greater (iOS >= 6 has native support for SmartAppBanner)
+	// - user is on mobile safari for ios 6 or greater (iOS >= 6 has native support for SmartAppBanner) UNLESS ios_app_id is manually specified
 	// - running on standalone mode
 	// - user dismissed banner
 	if (!this.type
-		|| ( this.type === 'ios' && agent.browser.name === 'Mobile Safari' && parseInt(agent.os.version) >= 6 )
+		|| ( !this.options.ios_app_id && this.type === 'ios' && agent.browser.name === 'Mobile Safari' && parseInt(agent.os.version) >= 6 )
 		|| navigator.standalone
 		|| cookie.get('smartbanner-closed')
 		|| cookie.get('smartbanner-installed')) {
@@ -83,7 +84,11 @@ var SmartBanner = function(options) {
 
 	// - If we dont have app id in meta, dont display the banner
 	if (!this.parseAppId()) {
-		return;
+		if (this.options.ios_app_id) {
+			this.appId = this.options.ios_app_id;
+		} else {
+		  return;
+	  }
 	}
 
 	this.create();

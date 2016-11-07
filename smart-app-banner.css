@@ -39,7 +39,7 @@
 	text-decoration: none;
 	border: 0;
 	border-radius: 14px;
-    -webkit-font-smoothing: subpixel-antialiased;
+	-webkit-font-smoothing: subpixel-antialiased;
 }
 
 .smartbanner-close:active,
@@ -63,11 +63,11 @@
 	width: 44%;
 	font-size: 11px;
 	line-height: 1.2em;
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .smartbanner-title {
-	font-size:13px;
+	font-size: 13px;
 	line-height: 18px;
 }
 
@@ -88,7 +88,8 @@
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-.smartbanner-button:active, .smartbanner-button:hover {
+.smartbanner-button:active,
+.smartbanner-button:hover {
 	color: #aaa;
 }
 
@@ -101,8 +102,9 @@
 
 /** iOS **/
 .smartbanner-ios {
-	background: #f2f2f2;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+	background: #f4f4f4;
+	background: linear-gradient(to bottom, #f4f4f4, #cdcdcd);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 	line-height: 80px;
 }
 
@@ -111,43 +113,45 @@
 	width: 18px;
 	height: 18px;
 	line-height: 18px;
-    font-family: Arial;
 	color: #888;
 	text-shadow: 0 1px 0 white;
-    -webkit-font-smoothing: none;
 }
 
 .smartbanner-ios .smartbanner-close:active,
 .smartbanner-ios .smartbanner-close:hover {
-	color: #888;
+	color: #aaa;
 }
 
 .smartbanner-ios .smartbanner-icon {
+	background: rgba(0, 0, 0, 0.6);
 	background-size: cover;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .smartbanner-ios .smartbanner-info {
 	color: #6a6a6a;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-    font-weight:300;
 }
 
 .smartbanner-ios .smartbanner-title {
-	color:#4d4d4d;
-	font-weight: 500;
+	color: #4d4d4d;
+	font-weight: bold;
 }
 
 .smartbanner-ios .smartbanner-button {
-    padding: 0 10px;
-    font-size: 15px;
-    min-width: 10%;
-    font-weight: 400;
-    color: #0C71FD;
+	padding: 0 10px;
+	min-width: 10%;
+	color: #6a6a6a;
+	background: #efefef;
+	background: linear-gradient(to bottom, #efefef, #dcdcdc);
+	border-radius: 3px;
+	box-shadow: inset 0 0 0 1px #bfbfbf, 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 0 rgba(255, 255, 255, 0.7) inset;
 }
 
 .smartbanner-ios .smartbanner-button:active,
 .smartbanner-ios .smartbanner-button:hover {
-	background: #f2f2f2;
+	background: #dcdcdc;
+	background: linear-gradient(to bottom, #dcdcdc, #efefef);
 }
 
 .smartbanner-ios .smartbanner-button-text {
@@ -160,7 +164,7 @@
 /** Android **/
 .smartbanner-android {
 	background: #3d3d3d url(data:image/gif;base64,R0lGODlhCAAIAIABAFVVVf///yH5BAEHAAEALAAAAAAIAAgAAAINRG4XudroGJBRsYcxKAA7);
-	box-shadow: inset 0 4px 0 #88B131;
+	box-shadow: inset 0 4px 0 #88b131;
 	line-height: 82px;
 }
 
@@ -187,23 +191,22 @@
 }
 
 .smartbanner-android .smartbanner-info {
-	color:#ccc;
-	text-shadow:0 1px 2px #000;
+	color: #ccc;
+	text-shadow: 0 1px 2px #000;
 }
 
 .smartbanner-android .smartbanner-title {
-	color:#fff;
+	color: #fff;
 	font-weight: bold;
 }
 
 .smartbanner-android .smartbanner-button {
 	min-width: 12%;
 	color: #d1d1d1;
-    font-weight: bold;
 	padding: 0;
 	background: none;
 	border-radius: 0;
-	box-shadow: 0 0 0 1px #333, 0 0 0 2px #DDDCDC;
+	box-shadow: 0 0 0 1px #333, 0 0 0 2px #dddcdc;
 }
 
 .smartbanner-android .smartbanner-button:active,
@@ -215,8 +218,8 @@
 	text-align: center;
 	display: block;
 	padding: 0 10px;
-	background: #42B6C9;
-	background: linear-gradient(to bottom, #42B6C9, #39A9BB);
+	background: #42b6c9;
+	background: linear-gradient(to bottom, #42b6c9, #39a9bb);
 	text-transform: none;
 	text-shadow: none;
 	box-shadow: none;
@@ -224,7 +227,7 @@
 
 .smartbanner-android .smartbanner-button-text:active,
 .smartbanner-android .smartbanner-button-text:hover {
-	background: #2AC7E1;
+	background: #2ac7e1;
 }
 
 /** Windows **/
@@ -250,9 +253,9 @@
 }
 
 .smartbanner-windows .smartbanner-icon {
-	background: rgba(0,0,0,0.6);
+	background: rgba(0, 0, 0, 0.6);
 	background-size: cover;
-	box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .smartbanner-windows .smartbanner-info {
@@ -261,7 +264,7 @@
 }
 
 .smartbanner-windows .smartbanner-title {
-	color:#4d4d4d;
+	color: #4d4d4d;
 	font-weight: bold;
 }
 

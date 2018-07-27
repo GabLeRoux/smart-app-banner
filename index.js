@@ -1,4 +1,6 @@
-var extend = require('xtend/mutable');
+'use strict';
+
+var extend = require('object-assign');
 var q = require('component-query');
 var doc = require('get-doc');
 var cookie = require('cookie-cutter');
@@ -16,7 +18,7 @@ var mixins = {
 		appMeta: 'apple-itunes-app',
 		iconRels: ['apple-touch-icon-precomposed', 'apple-touch-icon'],
 		getStoreLink: function () {
-			return 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id' + this.appId;
+			return 'https://itunes.apple.com/' + this.options.appStoreLanguage + '/app/id' + this.appId + "?mt=8";
 		}
 	},
 	android: {
@@ -73,25 +75,36 @@ var SmartBanner = function (options) {
 	// - user is on mobile safari for ios 6 or greater (iOS >= 6 has native support for SmartAppBanner) UNLESS iosAppId is manually specified
 	// - running on standalone mode
 	// - user dismissed banner
-	var unsupported = !this.type;
-	var isMobileSafari = (!this.options.iosAppId && this.type === 'ios' && agent.browser.name === 'Mobile Safari' && Number(agent.os.version) >= 6);
-	var runningStandAlone = navigator.standalone;
-	var userDismissed = cookie.get('smartbanner-closed');
-	var userInstalled = cookie.get('smartbanner-installed');
+	var unsupported = !this.type || !this.options.store[this.type];
+	if (unsupported) {
+		return;
+	}
 
-	if (unsupported || isMobileSafari || runningStandAlone || userDismissed || userInstalled) {
+	this.appMeta = mixins[this.type].appMeta;
+
+	// - If we dont have app id in meta, dont display the banner
+    if (!this.parseAppId()) {
+        if (this.options.iosAppId) {
+            this.appId = this.options.iosAppId;
+        } else {
+            return;
+        }
+    }
+
+	var isMobileSafari = (this.type === 'ios' && agent.browser.name === 'Mobile Safari' && parseInt(agent.os.version, 10) >= 6);
+
+	var runningStandAlone = navigator.standalone;
+	var userDismissed = cookie.get(this.appId + '-smartbanner-closed');
+	var userInstalled = cookie.get(this.appId + '-smartbanner-installed');
+
+	if (isMobileSafari || runningStandAlone || userDismissed || userInstalled) {
 		return;
 	}
 
 	extend(this, mixins[this.type]);
 
-	// - If we dont have app id in meta, dont display the banner
-	if (!this.parseAppId()) {
-		if (this.options.iosAppId) {
-			this.appId = this.options.iosAppId;
-		} else {
-			return;
-		}
+	if (!this.appId && agent.os.name === 'IOS' && agent.browser.name === 'Safari') {
+		return;
 	}
 
 	this.create();
@@ -150,23 +163,36 @@ SmartBanner.prototype = {
 	},
 	hide: function () {
 		root.classList.remove('smartbanner-show');
+
+		if (typeof this.options.close === 'function') {
+			return this.options.close();
+		}
 	},
 	show: function () {
 		root.classList.add('smartbanner-show');
+		if (typeof this.options.show === 'function') {
+			return this.options.show();
+		}
 	},
 	close: function () {
 		this.hide();
-		cookie.set('smartbanner-closed', 'true', {
+		cookie.set(this.appId + '-smartbanner-closed', 'true', {
 			path: '/',
 			expires: new Date(Number(new Date()) + (this.options.daysHidden * 1000 * 60 * 60 * 24))
 		});
+		if (typeof this.options.close === 'function') {
+			return this.options.close();
+		}
 	},
 	install: function () {
 		this.hide();
-		cookie.set('smartbanner-installed', 'true', {
+		cookie.set(this.appId + '-smartbanner-installed', 'true', {
 			path: '/',
 			expires: new Date(Number(new Date()) + (this.options.daysReminder * 1000 * 60 * 60 * 24))
 		});
+		if (typeof this.options.close === 'function') {
+			return this.options.close();
+		}
 	},
 	parseAppId: function () {
 		var meta = q('meta[name="' + this.appMeta + '"]');
